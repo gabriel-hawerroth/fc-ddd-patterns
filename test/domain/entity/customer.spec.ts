@@ -1,5 +1,5 @@
-import Address from "../../src/entity/address";
-import Customer from "../../src/entity/customer";
+import Address from "../../../src/domain/entity/address";
+import Customer from "../../../src/domain/entity/customer";
 
 describe("Customer unit testes", () => {
   const address = new Address("Main Street", 123, "12345", "Springfield");
