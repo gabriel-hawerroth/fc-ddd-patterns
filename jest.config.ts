@@ -38,6 +38,13 @@ const config: Config = {
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
 
+  moduleNameMapper: {
+    "@src/(.*)": "<rootDir>/src/$1",
+    "@domain/(.*)": "<rootDir>/src/domain/$1",
+    "@infrastructure/(.*)": "<rootDir>/src/infrastructure/$1",
+    "@test/(.*)": "<rootDir>/test/$1",
+  },
+
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
   //   "json",

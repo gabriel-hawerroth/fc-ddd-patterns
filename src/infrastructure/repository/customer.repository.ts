@@ -85,6 +85,6 @@ export default class CustomerRepository implements CustomerRepositoryInterface {
     if (customerModel.active) {
       customer.activate();
     }
-    return;
+    return customer;
   }
 }

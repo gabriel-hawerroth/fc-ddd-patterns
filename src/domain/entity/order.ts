@@ -49,4 +49,13 @@ export default class Order {
   private calculateTotal(): number {
     return this._items.reduce((acc, item) => acc + item.orderItemTotal(), 0);
   }
+
+  public changeCustomerId(customerId: string): void {
+    this._customerId = customerId;
+  }
+
+  public addItems(...items: OrderItem[]): void {
+    this._items.push(...items);
+    this._total = this.calculateTotal();
+  }
 }
