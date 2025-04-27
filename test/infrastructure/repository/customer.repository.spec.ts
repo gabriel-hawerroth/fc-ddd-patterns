@@ -7,6 +7,8 @@ import CustomerRepository from "../../../src/infrastructure/repository/customer.
 describe("Customer repository test", () => {
   let sequelize: Sequelize;
 
+  const customerRepository = new CustomerRepository();
+
   beforeEach(async () => {
     sequelize = new Sequelize({
       dialect: "sqlite",
@@ -24,7 +26,6 @@ describe("Customer repository test", () => {
   });
 
   it("should create a customer", async () => {
-    const customerRepository = new CustomerRepository();
     const customer = new Customer("123", "Customer 1");
     const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
     customer.changeAddress(address);
@@ -49,15 +50,16 @@ describe("Customer repository test", () => {
   });
 
   it("should update a customer", async () => {
-    const customerRepository = new CustomerRepository();
     const customer = new Customer("123", "Customer 1");
     const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
     customer.changeAddress(address);
     await customerRepository.create(customer);
 
     customer.changeName("Customer 2");
+    customer.addRewardPoints(10);
     await customerRepository.update(customer);
-    const customerModel = await CustomerModel.findOne({ where: { id: "123" } });
+
+    const customerModel = await CustomerModel.findByPk(customer.id);
 
     if (!customerModel) {
       throw new Error("Customer not found");
@@ -76,7 +78,6 @@ describe("Customer repository test", () => {
   });
 
   it("should find a customer", async () => {
-    const customerRepository = new CustomerRepository();
     const customer = new Customer("123", "Customer 1");
     const address = new Address("Street 1", 1, "Zipcode 1", "City 1");
     customer.changeAddress(address);
@@ -88,15 +89,12 @@ describe("Customer repository test", () => {
   });
 
   it("should throw an error when customer is not found", async () => {
-    const customerRepository = new CustomerRepository();
-
     expect(async () => {
       await customerRepository.find("456ABC");
     }).rejects.toThrow("Customer not found");
   });
 
   it("should find all customers", async () => {
-    const customerRepository = new CustomerRepository();
     const customer1 = new Customer("123", "Customer 1");
     const address1 = new Address("Street 1", 1, "Zipcode 1", "City 1");
     customer1.changeAddress(address1);

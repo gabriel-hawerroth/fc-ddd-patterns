@@ -33,11 +33,11 @@ export default class OrderItemModel extends Model {
   declare order: OrderModel;
 
   @Column({ allowNull: false })
-  declare quantity: number;
-
-  @Column({ allowNull: false })
   declare name: string;
 
   @Column({ allowNull: false })
   declare price: number;
+
+  @Column({ allowNull: false })
+  declare quantity: number;
 }

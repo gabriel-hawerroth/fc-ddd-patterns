@@ -1,6 +1,6 @@
 export default class OrderItem {
   private _id: string;
-  private _productdId: string;
+  private _productId: string;
   private _name: string;
   private _price: number;
   private _quantity: number;
@@ -15,7 +15,7 @@ export default class OrderItem {
     this._id = id;
     this._name = name;
     this._price = price;
-    this._productdId = productId;
+    this._productId = productId;
     this._quantity = quantity;
     this.validate();
   }
@@ -25,7 +25,7 @@ export default class OrderItem {
   }
 
   get productId(): string {
-    return this._productdId;
+    return this._productId;
   }
 
   get name(): string {
@@ -33,7 +33,7 @@ export default class OrderItem {
   }
 
   get price(): number {
-    return this._price * this._quantity;
+    return this._price;
   }
 
   get quantity(): number {
