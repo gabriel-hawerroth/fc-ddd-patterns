@@ -1,3 +1,11 @@
+import EventDispatcher from "../event/@shared/event-dispatcher";
+import CustomerAddressChangedEvent, {
+  CustomerAddressChangedEventData,
+} from "../event/customer/customer-address-changed.event";
+import CustomerCreatedEvent from "../event/customer/customer-created.event";
+import SendConsoleLog1WhenCustomerIsCreatedHandler from "../event/customer/handler/send-console-log-1-when-customer-is-created.handler";
+import SendConsoleLog2WhenCustomerIsCreatedHandler from "../event/customer/handler/send-console-log-2-when-customer-is-created.handler";
+import SendConsoleLogWhenCustomerAddressIsChangedHandler from "../event/customer/handler/send-console-log-when-customer-address-is-changed.handler";
 import Address from "./address";
 
 export default class Customer {
@@ -7,9 +15,27 @@ export default class Customer {
   private _active: boolean = false;
   private _rewardPoints: number = 0;
 
+  private _eventDispatcher: EventDispatcher;
+
   constructor(id: string, name: string) {
     this._id = id;
     this._name = name;
+
+    this._eventDispatcher = new EventDispatcher();
+    this._eventDispatcher.register(
+      CustomerCreatedEvent.name,
+      new SendConsoleLog1WhenCustomerIsCreatedHandler()
+    );
+    this._eventDispatcher.register(
+      CustomerCreatedEvent.name,
+      new SendConsoleLog2WhenCustomerIsCreatedHandler()
+    );
+    this._eventDispatcher.register(
+      CustomerAddressChangedEvent.name,
+      new SendConsoleLogWhenCustomerAddressIsChangedHandler()
+    );
+
+    this._eventDispatcher.notify(new CustomerCreatedEvent(this));
   }
 
   validate() {
@@ -22,6 +48,13 @@ export default class Customer {
   }
 
   changeAddress(address: Address) {
+    const eventData = new CustomerAddressChangedEventData();
+    eventData.customerId = this._id;
+    eventData.oldAddress = this._address;
+    eventData.newAddress = address;
+
+    this._eventDispatcher.notify(new CustomerAddressChangedEvent(eventData));
+
     this._address = address;
   }
 
