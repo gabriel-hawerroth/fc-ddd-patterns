@@ -82,10 +82,8 @@ describe("Customer unit testes", () => {
     });
 
     it("should register event handlers and dispatch CustomerCreatedEvent when creating a new customer", () => {
-      // Arrange & Act
       const customer = new Customer("1", "John Doe");
 
-      // Assert
       expect(consoleSpy).toHaveBeenCalledWith(
         "Esse é o primeiro console.log do evento: CustomerCreated"
       );
@@ -96,21 +94,16 @@ describe("Customer unit testes", () => {
     });
 
     it("should dispatch CustomerAddressChangedEvent when changing customer address", () => {
-      // Arrange
       const customer = new Customer("1", "John Doe");
       const oldAddress = new Address("Old Street", 123, "12345", "Old City");
       const newAddress = new Address("New Street", 456, "67890", "New City");
 
-      // Set initial address
       customer.changeAddress(oldAddress);
 
-      // Clear previous console calls
       consoleSpy.mockClear();
 
-      // Act
       customer.changeAddress(newAddress);
 
-      // Assert
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining("Endereço do cliente '1' alterado.")
       );
@@ -124,16 +117,12 @@ describe("Customer unit testes", () => {
     });
 
     it("should verify that event dispatcher is properly configured with all handlers", () => {
-      // Arrange & Act
       const customer = new Customer("1", "John Doe");
 
-      // We need to access the private _eventDispatcher for testing
-      // This is a bit of a hack but necessary for unit testing
       const eventDispatcher = (customer as any)
         ._eventDispatcher as EventDispatcher;
       const eventHandlers = eventDispatcher.getEventHandlers;
 
-      // Assert
       expect(eventHandlers[CustomerCreatedEvent.name]).toBeDefined();
       expect(eventHandlers[CustomerCreatedEvent.name]).toHaveLength(2);
       expect(eventHandlers[CustomerCreatedEvent.name][0]).toBeInstanceOf(
@@ -151,47 +140,37 @@ describe("Customer unit testes", () => {
     });
 
     it("should include correct event data when dispatching CustomerCreatedEvent", () => {
-      // Arrange
       let capturedEvent: any = null;
 
-      // Mock the EventDispatcher.notify method before creating customer
       const originalNotify = EventDispatcher.prototype.notify;
       EventDispatcher.prototype.notify = function (event: any) {
         capturedEvent = event;
         originalNotify.call(this, event);
       };
 
-      // Act
       const customer = new Customer("1", "John Doe");
 
-      // Assert
       expect(capturedEvent).toBeDefined();
       expect(capturedEvent.eventData).toBe(customer);
       expect(capturedEvent.dateTimeOccurred).toBeInstanceOf(Date);
       expect(capturedEvent.constructor.name).toBe("CustomerCreatedEvent");
 
-      // Restore original method
       EventDispatcher.prototype.notify = originalNotify;
     });
 
     it("should include correct event data when dispatching CustomerAddressChangedEvent", () => {
-      // Arrange
       const customer = new Customer("1", "John Doe");
       const oldAddress = new Address("Old Street", 123, "12345", "Old City");
       const newAddress = new Address("New Street", 456, "67890", "New City");
 
-      // Set initial address
       customer.changeAddress(oldAddress);
 
-      // Mock the notify method to capture the event
       const eventDispatcher = (customer as any)
         ._eventDispatcher as EventDispatcher;
       const notifySpy = jest.spyOn(eventDispatcher, "notify");
 
-      // Act
       customer.changeAddress(newAddress);
 
-      // Assert
       expect(notifySpy).toHaveBeenCalledWith(
         expect.objectContaining({
           eventData: expect.objectContaining({
@@ -207,7 +186,6 @@ describe("Customer unit testes", () => {
     });
 
     it("should handle multiple address changes with correct event data", () => {
-      // Arrange
       const customer = new Customer("1", "John Doe");
       const address1 = new Address("Street 1", 123, "12345", "City 1");
       const address2 = new Address("Street 2", 456, "67890", "City 2");
@@ -215,16 +193,12 @@ describe("Customer unit testes", () => {
 
       consoleSpy.mockClear();
 
-      // Act
-      customer.changeAddress(address1); // First address change
-      customer.changeAddress(address2); // Second address change
-      customer.changeAddress(address3); // Third address change
+      customer.changeAddress(address1);
+      customer.changeAddress(address2);
+      customer.changeAddress(address3);
 
-      // Assert - Should have been called 3 times (once for each address change)
-      // Each call should have 3 console.log statements
-      expect(consoleSpy).toHaveBeenCalledTimes(9); // 3 changes × 3 logs each
+      expect(consoleSpy).toHaveBeenCalledTimes(9);
 
-      // Verify the event data includes correct addresses for the last change
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining("Endereço do cliente '1' alterado.")
       );
