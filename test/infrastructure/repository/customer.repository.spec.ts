@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
-import Address from "../../../src/domain/entity/address";
+import Address from "../../../src/domain/customer/value-object/address";
 import Customer from "../../../src/domain/entity/customer";
 import CustomerModel from "../../../src/infrastructure/db/sequelize/model/customer.model";
 import CustomerRepository from "../../../src/infrastructure/repository/customer.repository";
