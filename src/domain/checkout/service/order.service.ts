@@ -1,7 +1,7 @@
+import Customer from "@src/domain/customer/entity/customer";
 import { v4 as uuid } from "uuid";
-import Order from "../checkout/entity/order";
-import OrderItem from "../checkout/entity/order_item";
-import Customer from "../entity/customer";
+import Order from "../entity/order";
+import OrderItem from "../entity/order_item";
 
 export default class OrderService {
   static total(orders: Order[]): number {

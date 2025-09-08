@@ -1,4 +1,4 @@
-import Product from "../../../src/domain/product/entity/product";
+import Product from "@src/domain/product/entity/product";
 
 describe("Product unit tests", () => {
   it("should throw an error when ID is not provided", () => {

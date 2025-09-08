@@ -1,5 +1,5 @@
-import Order from "../../../src/domain/checkout/entity/order";
-import OrderItem from "../../../src/domain/checkout/entity/order_item";
+import Order from "@src/domain/checkout/entity/order";
+import OrderItem from "@src/domain/checkout/entity/order_item";
 
 describe("Order unit testes", () => {
   const item = new OrderItem("1", "Product 1", 10, "p1", 1);

@@ -1,8 +1,8 @@
-import OrderItemModel from "@infrastructure/db/sequelize/model/order-item.model";
-import OrderModel from "@infrastructure/db/sequelize/model/order.model";
 import Order from "@src/domain/checkout/entity/order";
 import OrderItem from "@src/domain/checkout/entity/order_item";
 import OrderRepositoryInterface from "@src/domain/checkout/repository/order-repository.interface";
+import OrderItemModel from "@src/infrastructure/checkout/repository/sequelize/order-item.model";
+import OrderModel from "@src/infrastructure/checkout/repository/sequelize/order.model";
 
 export default class OrderRepository implements OrderRepositoryInterface {
   async create(entity: Order): Promise<void> {
